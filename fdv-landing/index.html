@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forge Digital Ventures</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #001f3f;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 1px, transparent 2px, transparent 40px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 2px, transparent 40px);
+  background-blend-mode: overlay;
+  background-size: 40px 40px;
+  color: #f0f8ff;
+  line-height: 1.6;
+}
+    header {
+      background: linear-gradient(90deg, #1f1f1f, #2a2a2a);
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 3px solid #ff6600;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+    section {
+      padding: 2rem 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .pillar {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .cta {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .cta a {
+      color: #fff;
+      background: #ff6600;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<link rel="icon" type="image/png" href="assets/fdv-transparent-small.png">
+</style>
+</head>
+<body>
+  <header style="background: transparent; padding: 1.5rem 0; text-align: center;">
+  <img src="assets/fdv-banner.png"
+       alt="Forge Digital Ventures"
+       style="width: 60%; max-width: 600px; height: auto; display: block; margin: 0 auto;" />
+</header>
+
+  <section style="text-align: center; max-width: 1000px; margin: 0 auto; padding: 3rem 1.5rem;">
+  <h2 style="font-size: 2rem; margin-bottom: 1rem; color: #ffb84d; text-shadow: 0 0 8px #000;">
+    Power to the Players, Tools for the Builders.
+  </h2>
+  <p style="font-size: 1.1rem; color: #ddd; line-height: 1.8;">
+    FDV is a digital studio creating modular tools to support creators, players, guilds, and game developers. Our tools power coordination, competition, and innovation — without the overhead of building infrastructure from scratch.
+  </p>
+</section>
+
+  <section>
+  <h2 style="
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    color: #ffb84d;
+    text-align: left;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  ">
+    Foundations of FDV
+  </h2>
+
+  <div class="pillars">
+    <!-- ✅ Tournament Builder Pillar -->
+    <div class="pillar" style="position: relative; padding: 0; background: none; border: none;">
+      <img src="assets/tournament-builder-poster.png" alt="Tournament Builder Poster" style="width: 100%; border-radius: 8px;" />
+      <a href="https://tournamentbuilder-production.up.railway.app/"
+         target="_blank"
+         style="
+           position: absolute;
+           top: 50%;
+           left: 10%;
+           width: 80%;
+           height: 25%;
+           display: block;
+         ">
+      </a>
+    </div>
+
+    <!-- ✅ Knights Guild Pillar -->
+    <div class="pillar" style="position: relative; padding: 0; background: none; border: none;">
+      <img src="assets/knights-guild-poster.png" alt="Knights Guild Poster" style="width: 100%; border-radius: 8px;" />
+      <a href="https://knightsguild.co/"
+         target="_blank"
+         style="
+           position: absolute;
+           top: 50%;
+           left: 10%;
+           width: 80%;
+           height: 25%;
+           display: block;
+         ">
+      </a>
+    </div>
+
+   <!-- Placeholder 3: Smart Contracts -->
+    <div class="pillar">
+      <h3>Smart Contracts</h3>
+      <p>Rental, staking, and automation for on-chain game economies — modular and reusable.</p>
+    </div>
+
+    <!-- Placeholder 4: API Access -->
+    <div class="pillar">
+      <h3>API Access</h3>
+      <p>All FDV tools support API integration, including tournament automation via Anvil.</p>
+    </div>
+
+  </div>
+</section>
+
+  <section>
+    <h2>Built For</h2>
+    <ul>
+      <li><strong>Creators</strong> – Monetize community events and content</li>
+      <li><strong>Guilds</strong> – Coordinate, reward, and scale member activity</li>
+      <li><strong>Games</strong> – Integrate tournament layers and smart logic without building from scratch</li>
+    </ul>
+  </section>
+
+  <section class="cta">
+    <h2>🚀 Launching Soon: Tournament Builder</h2>
+    <p>Be among the first to host and earn with our powerful event engine.</p>
+    <a href="#">Join the Waitlist</a>
+  </section>
+
+  <footer>
+    &copy; 2025 Forge Digital Ventures. All rights reserved.
+  </footer>
+</body>
+</html>
