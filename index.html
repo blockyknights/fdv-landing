@@ -1,0 +1,841 @@
+See new posts
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forge Digital Ventures</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/fdv-transparent-small.png">
+  <style>
+    body {
+      background-color: #0a0a1a;
+      background-image: url('assets/fdv-circuit-bg.png'),
+                        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-repeat: repeat;
+      background-size: 400px 400px;
+      margin: 0;
+      overflow-x: visible;
+    }
+    #arcade-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+.pellet {
+  width: 6px;
+  height: 6px;
+  background: #00e0ff;
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #00e0ff;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+#arcade-sprite {
+  width: 16px;
+  height: 16px;
+  background: #ff00c8;
+  box-shadow: 0 0 12px #ff00c8;
+  border-radius: 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  image-rendering: pixelated;
+  transition: top 0.12s linear, left 0.12s linear;
+}
+
+header {
+  text-align: center;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+header img {
+  width: 250px;
+  max-width: 80%;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main-heading {
+  font-size: 3.5rem;
+  margin: 0;
+  background: linear-gradient(90deg, #ff00c8, #00e0ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(255, 0, 200, 0.7);
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+}
+
+header h2 {
+  font-size: 2.5rem;
+  margin: 0;
+  background: linear-gradient(90deg, #ff00c8, #00e0ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 8px rgba(255, 0, 200, 0.5);
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.neon-line {
+  width: 80%;
+  max-width: 600px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff00c8, #00e0ff);
+  box-shadow: 0 0 10px #ff00c8, 0 0 15px #00e0ff;
+  border-radius: 2px;
+  margin: 1rem auto;
+  animation: neonGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neonGlow {
+  0% { opacity: 0.7; box-shadow: 0 0 10px #ff00c8, 0 0 15px #00e0ff; }
+  100% { opacity: 1; box-shadow: 0 0 15px #ff00c8, 0 0 20px #00e0ff; }
+}
+
+header p {
+  color: #00b2ff;
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 1rem auto;
+  line-height: 1.5;
+}
+
+.subheading {
+  font-size: 1.4rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff00c8, #ffb84d);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #fff;
+}
+
+.page-grid {
+  display: flex;
+  min-height: 100vh;
+}
+
+#left-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12vw;
+  height: 100vh;
+  background: rgba(10, 10, 26, 0.7);
+  border-right: 1px solid rgba(0, 224, 255, 0.2);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+  gap: 1.5rem;
+  z-index: 10;
+  box-shadow: 4px 0 12px rgba(0, 224, 255, 0.1);
+}
+
+.sidebar-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-orientation: mixed;
+  font-size: 1rem;
+  color: #00e0ff;
+  letter-spacing: 0.3rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.6;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.sidebar-icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  transition: transform 0.2s ease, filter 0.3s ease;
+  filter: drop-shadow(0 0 6px rgba(0, 224, 255, 0.5));
+}
+
+.sidebar-icon:hover img {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(255, 0, 200, 0.7));
+}
+
+.main-content {
+  margin-left: 12vw;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-width: 0;
+  overflow-x: visible;
+  position: relative;
+}
+
+section {
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.content-flex-wrap {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-column {
+  flex: 1 1 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.floating-right-column {
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+  width: 300px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.featured-project {
+  width: 100%;
+}
+
+.pillars {  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 0.4fr)); /* Increased from 130px to 135px, 0.35fr to 0.4fr for slightly larger non-featured pillars */
+  gap: 1rem;
+  width: 100%;
+  justify-content: center; /* Maintain centering relative to featured pillar */
+}.pillar {
+  background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(10, 10, 26, 0.8));
+  border: 1px solid rgba(0, 224, 255, 0.3);
+  padding: 0.8rem; /* Slightly reduced padding for non-featured */
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  backdrop-filter: blur(5px);
+  animation: pulse 3s infinite ease-in-out;
+  font-size: 0.9rem; /* Slightly smaller text for non-featured */
+}
+
+.pillar:hover {  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 224, 255, 0.5); /* Matches .info-card:hover blue glow */
+}.pillar.featured {  background: linear-gradient(135deg, #0e1d1d, #142524);
+  border: 2px solid #00ffcc;
+  padding: 2.4rem; /* Increased from 2.2rem for larger appearance */
+  border-radius: 14px;
+  box-shadow: 0 0 22px rgba(0, 255, 180, 0.3);
+  width: 100%;
+  max-width: 640px; /* Increased from 600px for larger featured pillar */
+  margin: 0 auto;
+}.pillar.featured:hover {  box-shadow: 0 8px 20px rgba(0, 224, 255, 0.5); /* Blue glow instead of greenish */
+  transform: translateY(-7px);
+}.pillar {  background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(10, 10, 26, 0.8));
+  border: 1px solid rgba(0, 224, 255, 0.3);
+  padding: 0.8rem;
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  backdrop-filter: blur(5px);
+  font-size: 0.9rem;
+  box-shadow: none; /* Ensure no glow by default */
+}.pillar img {
+  width: 100%;
+  max-height: 180px; /* Reduced for non-featured pillars */
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.pillar.featured img {
+  max-height: 220px; /* Slightly larger for featured */
+}
+
+.pillar h3 {
+  margin: 0.5rem 0;
+  color: #00e0ff;
+  font-size: 1.1rem; /* Slightly smaller for non-featured */
+}
+
+.pillar.featured h3 {
+  color: #00ffc8;
+  font-size: 1.5rem; /* Slightly larger for featured */
+}
+
+.pillar p {
+  margin: 0.5rem 0;
+  color: #ddd;
+  font-size: 0.85rem; /* Slightly smaller for non-featured */
+}
+
+.pillar.featured p {
+  color: #d0f5eb;
+  font-size: 1.1rem; /* Slightly larger for featured */
+}
+
+.badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: linear-gradient(90deg, #ff00c8, #00e0ff);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 0 8px rgba(255, 0, 200, 0.5);
+}
+
+.badge.beta {
+  background: linear-gradient(90deg, #ffb84d, #ff69b4);
+}
+
+.pillar-cta {
+  display: inline-block;
+  color: #fff;
+  background: linear-gradient(90deg, #ff00c8, #00e0ff);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  transition: background 0.3s;
+}
+
+.pillar.featured .pillar-cta {  background: linear-gradient(90deg, #00ff88, #00cc66);
+  color: #000;
+  font-size: 1.1rem; /* Increased from 1rem for larger text */
+  padding: 1.2rem 2.4rem; /* Increased from 1rem 2rem for larger button */
+  border-radius: 12px; /* Slightly larger for proportion */
+  margin-top: 1rem; /* Increased from 0.5rem to move button down */
+}.pillar.featured .pillar-cta:hover {
+  background: linear-gradient(90deg, #33ff99, #33ff66); /* Restored green gradient, slightly brighter */
+  color: #000;
+  box-shadow: 0 0 20px rgba(51, 255, 153, 1), 0 0 30px rgba(51, 255, 153, 0.8); /* Brighter, more intense green glow */
+}.pillar-cta:hover {
+  background: linear-gradient(90deg, #00e0ff, #ff00c8);
+}
+
+/* Non-featured pillar styles */
+.pillar.knights-guild {
+  padding: 0;
+  overflow: hidden;
+}
+
+.pillar.knights-guild img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-height: none;
+  margin-bottom: 0;
+  border-radius: 12px;
+}
+
+.pillar.knights-guild .pillar-button-zone {
+  position: absolute;
+  bottom: 7.6%;
+  left: 20%;
+  width: 60%;
+  height: 10%;
+  cursor: pointer;
+  z-index: 2;
+  transition: box-shadow 0.3s ease;
+  border-radius: 12px;
+}
+
+.pillar.knights-guild .pillar-button-zone:hover {
+  box-shadow: 0 0 15px #a67b3d, 0 0 25px #d4a017;
+}
+
+.pillar.convert-my-crypto {
+  position: relative;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 224, 255, 0.3);
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.pillar.convert-my-crypto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-height: none;
+  margin-bottom: 0;
+  border-radius: 12px;
+}
+
+.cmc-button-zone {
+  position: absolute;
+  bottom: 12%;
+  left: 15%;
+  width: 70%;
+  height: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 12px;
+}
+
+.cmc-button {
+  width: 100%;
+  height: 100%;
+  background: #00cfe6;
+  color: #000;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  font-size: 0.8rem; /* Slightly smaller for non-featured */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 153, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cmc-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 18px rgba(255, 153, 0, 0.8), 0 0 24px rgba(255, 153, 0, 0.5);
+}
+
+.info-card {
+  background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(10, 10, 26, 0.8));
+  border: 1px solid rgba(0, 224, 255, 0.3);
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  transition: transform 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 224, 255, 0.5);
+}
+
+.info-card h3 {
+  color: #ff69b4;
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.info-card p {
+  color: #ddd;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.cta {
+  text-align: center;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.cta a {  color: #fff;
+  background: linear-gradient(90deg, #ff00c8, #ff6e6e);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 0 10px rgba(255, 0, 200, 0.5);
+  transition: transform 0.2s;
+
+}.cta a:hover {
+  transform: scale(1.05);
+   box-shadow: 0 0 20px rgba(255, 0, 200, 0.8), 0 0 30px rgba(0, 224, 255, 0.6);
+   
+}footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: #777;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.bolt {
+  width: 8px;
+  height: 8px;
+  background: #00e0ff;
+  box-shadow: 0 0 6px #00e0ff, 0 0 12px #ff00c8;
+  position: absolute;
+  image-rendering: pixelated;
+  opacity: 0.8;
+  animation: flicker 0.3s infinite alternate;
+  transition: left 0.1s linear, top 0.1s linear;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.3); }
+}
+
+#bolt-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#image-click-zone {
+  position: absolute;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+  aside#left-sidebar {
+    display: none !important;
+  }
+  .main-content {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+  .content-flex-wrap {
+    flex-direction: column;
+  }
+  .pillar.featured {
+    max-width: 100%;
+  }
+  .pillars {
+grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); /* Increased from 170px to 175px for mobile */
+justify-content: center; /* Maintain centering on mobile */  }
+      .floating-right-column {
+        position: static;
+        width: 100%;
+        margin: 0;
+      }
+    }
+  </style></head>
+<body>
+  <div id="arcade-overlay"></div>
+  <div id="arcade-sprite"></div>
+  <div id="bolt-layer"></div>
+  <div id="image-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:9999; flex-direction:column;">
+    <button id="close-modal" style="position:absolute; top:20px; right:30px; font-size:2rem; background:none; color:#fff; border:none; cursor:pointer; z-index:10000;"></button>
+    <img id="modal-img" src="" alt="Zoomed Image" style="max-width:90%; max-height:90%; border-radius:12px; box-shadow:0 0 30px rgba(0,224,255,0.6);" />
+    <div id="image-click-zone"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <img src="assets/fdv-logo-ring.png" alt="FDV Logo" />
+    <hr class="neon-line" />
+    <h1 class="main-heading">Unleashing Creativity in Gaming</h1>
+    <hr class="neon-line" />
+    <div class="header-text">
+      <h2>Power to the Players, Tools for the Builders</h2>
+      <p>
+        FDV is a digital studio creating modular tools to support creators, players, guilds, and game developers.
+        Our tools power coordination, competition, and innovation — without the overhead of building infrastructure from scratch.
+      </p>
+    </div>
+  </header>
+
+  <!-- PAGE GRID -->
+  <div class="page-grid">
+    <!-- SIDEBAR -->
+    <aside id="left-sidebar">
+      <div class="sidebar-label">SOCIALS</div>
+      <a class="sidebar-icon" href="https://forge-digital-ventures.gitbook.io/fdv" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitbook/gitbook-original.svg" alt="GitBook" />
+      </a>
+      <a class="sidebar-icon" href="https://x.com/ForgeDigitalV" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968958.png" alt="X" />
+      </a>
+      <a class="sidebar-icon" href="https://discord.com/invite/knights-of-cornucopias" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord" />
+      </a>
+      <a class="sidebar-icon" href="https://www.youtube.com/@ForgeDigitalVentures" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" />
+      </a>
+    </aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <section class="content-flex-wrap">
+    <!-- LEFT SIDE: FEATURED & PILLARS -->
+    <div class="left-column">
+      <h2 style="color: #ffb84d; text-shadow: 0 0 6px #000;">Our Tools</h2>
+
+      <!-- Featured Project: Tournament Builder -->
+      <div class="featured-project">
+        <div class="pillar featured tournament-builder">
+          <img src="assets/tournament-builder.png" alt="Tournament Builder" />
+          <div class="badge">Coming Soon</div>
+          <h3>Tournament Builder</h3>
+          <p>Host, manage, and power esports tournaments with a clean interface and pro-level tools. Built for players, hosts, and devs.</p>
+          <a href="https://tournamentbuilder-production.up.railway.app/" target="_blank" class="pillar-cta">Join The Fun</a>
+        </div>
+      </div>
+
+      <!-- Other Projects -->
+      <div class="pillars">
+        <div class="pillar convert-my-crypto">
+          <img src="assets/convert-my-crypto-poster.png" alt="Swap Poster" />
+          <div class="badge beta">In Development</div>
+          <div class="cmc-button-zone">
+            <div class="cmc-button">Explore Beta</div>
+          </div>
+          <a href="https://knightswap.ada-anvil.io/en/" target="_blank" class="pillar-cta" style="display: none;">Explore Beta</a>
+        </div>
+
+        <div class="pillar knights-guild">
+          <img src="assets/knights-guild-poster.png" alt="Knights Guild Poster" />
+          <div class="pillar-button-zone" data-href="https://knightsguild.co/"></div>
+          <a href="https://knightsguild.co/" target="_blank" class="pillar-cta" style="display: none;">Visit Site</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: JOIN THE MISSION -->
+    <div class="floating-right-column">
+      <h2 style="color: #ff69b4; text-shadow: 0 0 6px #000;">Join the FDV Mission</h2>
+      <div class="info-card">
+        <h3>Empower Creators</h3>
+        <p>Our tools fuel innovation for game developers, players, and guilds.</p>
+      </div>
+      <div class="info-card">
+        <h3>Build with the FDV API</h3>
+        <p>Access the Tournament Builder endpoints via Anvil.Integrate brackets, automate matchups, and power your platform.</p>
+            <a href="https://dev.ada-anvil.io/~/revisions/8LFnY8E7hgIR2phJPSs5/tournament-management/overview" target="_blank" class="pillar-cta">View API Docs</a>
+          </div>
+          <div class="info-card">
+            <h3>Contact Us</h3>
+            <p>For collaborations, questions, or press inquiries — get in touch with our outreach lead.
+We’d love to hear from you.</p>
+            <a href="#" class="pillar-cta">Connect with Us</a>
+          </div>
+        </div>
+      </section>  <section class="cta">  <h2 style="color: #ff69b4; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+     Launching Soon: 
+    <img src="assets/logo.png" alt="Tournament Builder Logo" style="height: 2rem; vertical-align: middle;" />
+  </h2>
+  <p>Be among the first to host and run events with our powerful event engine.</p>
+  <a href="https://tournamentbuilder.io/" target="_blank">JOIN THE ACTION</a>
+</section>
+
+  <footer>
+    © 2025 Forge Digital Ventures. All rights reserved.
+  </footer>
+</div>  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    const gridSize = 30;
+    const safeZoneLeft = 0.12 * window.innerWidth; // avoid left sidebar (12vw)
+    const safeZoneRight = window.innerWidth;
+    const safeZoneTop = 0;
+    const safeZoneBottom = window.innerHeight;
+
+    let posX = Math.floor((Math.random() * (safeZoneRight - safeZoneLeft) + safeZoneLeft) / gridSize) * gridSize;
+    let posY = Math.floor(Math.random() * safeZoneBottom / gridSize) * gridSize;
+    let direction = 'right';
+    const directions = ['right', 'down', 'left', 'up'];
+
+    const sprite = document.getElementById('arcade-sprite');
+    const overlay = document.getElementById('arcade-overlay');
+
+    function spawnPellet(x, y) {
+      const pellet = document.createElement('div');
+      pellet.className = 'pellet';
+      pellet.style.left = `${x + 12}px`;
+      pellet.style.top = `${y + 12}px`;
+      overlay.appendChild(pellet);
+      return pellet;
+    }
+
+    function move() {
+      let nextX = posX;
+      let nextY = posY;
+
+      if (direction === 'right') nextX += gridSize;
+      if (direction === 'left') nextX -= gridSize;
+      if (direction === 'down') nextY += gridSize;
+      if (direction === 'up') nextY -= gridSize;
+
+      // Bounce off unsafe zones
+      if (nextX < safeZoneLeft || nextX > safeZoneRight - gridSize ||
+          nextY < safeZoneTop || nextY > safeZoneBottom - gridSize) {
+        const validDirs = directions.filter(dir => {
+          if (dir === 'right') return posX + gridSize < safeZoneRight - gridSize;
+          if (dir === 'left') return posX - gridSize > safeZoneLeft;
+          if (dir === 'down') return posY + gridSize < safeZoneBottom - gridSize;
+          if (dir === 'up') return posY - gridSize > safeZoneTop;
+        });
+        direction = validDirs[Math.floor(Math.random() * validDirs.length)] || 'right';
+        return requestAnimationFrame(() => setTimeout(move, 120));
+      }
+
+      // Create a pellet one step ahead
+      const pellet = spawnPellet(nextX, nextY);
+
+      // Move sprite
+      posX = nextX;
+      posY = nextY;
+      sprite.style.left = `${posX}px`;
+      sprite.style.top = `${posY}px`;
+
+      // Eat pellet shortly after
+      setTimeout(() => pellet.style.opacity = 0, 150);
+      setTimeout(() => pellet.remove(), 300);
+
+      // Change direction randomly
+      if (Math.random() < 0.15) {
+        const rand = Math.floor(Math.random() * directions.length);
+        direction = directions[rand];
+      }
+
+      requestAnimationFrame(() => setTimeout(move, 120));
+    }
+
+    move();
+
+    // Click image in card
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const clickZone = document.getElementById('image-click-zone');
+    let activeLink = '';
+
+    // Handle pillar button zone and cmc-button clicks
+    document.querySelectorAll('.pillar-button-zone').forEach(zone => {
+      zone.addEventListener('click', e => {
+        e.stopPropagation();
+        const href = zone.getAttribute('data-href');
+        if (href) window.open(href, '_blank');
+      });
+    });
+
+    document.querySelectorAll('.cmc-button-zone').forEach(zone => {
+      zone.addEventListener('click', e => {
+        e.stopPropagation();
+        const href = zone.parentElement.querySelector('.pillar-cta').getAttribute('href');
+        if (href) window.open(href, '_blank');
+      });
+    });
+
+    document.querySelectorAll('.pillar').forEach(card => {
+  const img = card.querySelector('img');
+  const link = card.querySelector('.pillar-cta')?.getAttribute('href');
+
+  if (img && link) {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', e => {
+      // Prevent modal if clicking button zones
+      if (e.target.closest('.pillar-button-zone') || e.target.closest('.cmc-button-zone')) {
+        return;
+      }
+      e.stopPropagation();
+      // Special handling for Knights Guild
+      if (card.classList.contains('knights-guild')) {
+        modalImg.src = 'assets/card.png';
+        activeLink = 'https://www.jpg.store/collection/knightsofcornucopias?tab=items';
+      }
+      // Special handling for Tournament Builder
+      else if (card.classList.contains('tournament-builder')) {
+        modalImg.src = 'assets/tournament-builder-poster.png';
+        activeLink = 'https://tournamentbuilder.io/rules';
+      }
+      // Default for other pillars (e.g., Convert My Crypto)
+      else {
+        modalImg.src = img.src;
+        activeLink = link;
+      }
+      modal.style.display = 'flex';
+
+      // Wait until image is loaded before placing click zone
+      setTimeout(() => {
+        const rect = modalImg.getBoundingClientRect();
+
+        const isTournamentBuilder = modalImg.src.includes('tournament-builder');
+        const zoneHeight = rect.height * 0.3;
+        const zoneTop = isTournamentBuilder ? rect.top + rect.height * 0.55 : rect.top + rect.height * 0.7;
+        const zoneLeft = rect.left + rect.width * 0.2;
+        const zoneWidth = rect.width * 0.6;
+
+        clickZone.style.top = `${zoneTop}px`;
+        clickZone.style.left = `${zoneLeft}px`;
+        clickZone.style.width = `${zoneWidth}px`;
+        clickZone.style.height = `${zoneHeight}px`;
+        clickZone.style.display = 'block';
+      }, 50);
+    });
+  }
+});
+
+    // Clicking the image click zone
+    clickZone.addEventListener('click', () => {
+      if (activeLink) window.open(activeLink, '_blank');
+    });
+
+    // Close modal only via X
+    document.getElementById('close-modal').addEventListener('click', () => {
+      modal.style.display = 'none';
+      clickZone.style.display = 'none';
+    });
+
+    // Also close if you click the background (but not the image itself)
+    document.getElementById('image-modal').addEventListener('click', e => {
+      if (e.target.id === 'image-modal') {
+        modal.style.display = 'none';
+        clickZone.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
+
